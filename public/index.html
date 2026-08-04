@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="wo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Jiema</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* —— 配色（瑞鹤·夜空版）—— */
+    --sky-top:    #24406b;   /* 石青夜空 顶 */
+    --sky-bottom: #2c4a76;   /* 石青夜空 底 */
+    --paper:      #f4f2ea;   /* 下方米绢纸 */
+    --ivory:      #f7f5ef;   /* 鹤身 / 助手气泡 */
+    --ink:        #23211d;   /* 墨色文字 / 翅尖 */
+    --crown:      #c0392b;   /* 朱顶 / 麦克风 */
+    --leg:        #c8b27a;   /* 鹤腿金褐 */
+    --muted:      #8f8c82;   /* 次要文字 */
+    --sky-label:  #9fb4ce;   /* 夜空里的浅字 */
+
+    --bubble-user: var(--sky-top);
+    --radius: 18px;
+    --shell-max: 480px;
+
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+    --display: "Fraunces", Georgia, serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; }
+  body{
+    font-family: var(--sans);
+    background: #dfe3ea;               /* 手机外的留白 */
+    color: var(--ink);
+    display: flex;
+    justify-content: center;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* —— 整机外壳 —— */
+  .shell{
+    width: 100%;
+    max-width: var(--shell-max);
+    height: 100dvh;
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  @media (min-width: 500px){
+    .shell{ height: min(880px, 96dvh); margin: auto; border-radius: 28px;
+            box-shadow: 0 20px 60px rgba(30,44,70,.18); }
+  }
+
+  /* ======================= 夜空 / 鹤 ======================= */
+  .sky{
+    position: relative;
+    flex: 0 0 auto;
+    height: 40%;
+    min-height: 240px;
+    background: linear-gradient(var(--sky-top), var(--sky-bottom));
+    overflow: hidden;
+    transition: height .42s ease, min-height .42s ease;
+  }
+  .brand{
+    position: absolute; top: 20px; left: 22px; z-index: 3;
+  }
+  .brand h1{
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 26px;
+    letter-spacing: .5px;
+    color: var(--ivory);
+    margin: 0;
+  }
+  .star{ position:absolute; border-radius:50%; background:#dce7f2; opacity:.5;
+         animation: twinkle 3s ease-in-out infinite; }
+  @keyframes twinkle{ 0%,100%{opacity:.25} 50%{opacity:.85} }
+
+  .cloud{ position:absolute; top:34px; right:-10px; width:150px; opacity:.3;
+          animation: drift 12s ease-in-out infinite alternate; }
+  @keyframes drift{ from{transform:translateX(0)} to{transform:translateX(14px)} }
+
+  /* 鹤 —— 放在夜空底部中间 */
+  .crane{
+    position:absolute; bottom:-2px; left:50%;
+    transform: translateX(-50%);
+    width: 210px; height: auto;
+  }
+  /* 身体极缓呼吸 */
+  .crane-body{ transform-origin: 120px 150px; animation: breathe 5.5s ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{transform:scale(1)} 50%{transform:scale(1.02)} }
+
+  /* 翅膀：待命收拢，听/想时轻抬 */
+  .wing{ transform-origin: 120px 132px; transition: transform .5s ease; }
+  .shell.listening .wing,
+  .shell.thinking  .wing{ animation: flap 1.4s ease-in-out infinite; }
+  @keyframes flap{ 0%,100%{transform:rotate(0)} 50%{transform:rotate(-9deg)} }
+
+  /* 朱顶：听的时候发亮呼吸 */
+  .crown{ transition: filter .4s ease; }
+  .shell.listening .crown{ animation: crownGlow 1.2s ease-in-out infinite; }
+  @keyframes crownGlow{ 0%,100%{filter:none} 50%{filter:drop-shadow(0 0 6px rgba(192,57,43,.9))} }
+
+  @media (prefers-reduced-motion: reduce){
+    .crane-body,.wing,.crown,.cloud,.star,.shell.listening .wing,.shell.thinking .wing{ animation:none !important; }
+  }
+
+  /* ======================= 对话区 ======================= */
+  .sheet{
+    flex: 1 1 auto;
+    background: var(--paper);
+    border-radius: 22px 22px 0 0;
+    margin-top: -18px;                 /* 米绢盖住一点夜空 */
+    position: relative; z-index: 2;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;                     /* 允许内部滚动 */
+    transition: margin-top .42s ease, border-radius .42s ease;
+  }
+
+  .shell.typing .sky{
+    height: 72px;
+    min-height: 72px;
+  }
+  .shell.typing .sheet{
+    margin-top: -10px;
+    border-radius: 18px 18px 0 0;
+  }
+  .shell.typing .crane,
+  .shell.typing .cloud,
+  .shell.typing .star{
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .log{
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 22px 18px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    scroll-behavior: smooth;
+  }
+  .log::-webkit-scrollbar{ width: 0; }
+
+  .turn{ max-width: 84%; }
+  .who{ font-size: 9px; letter-spacing: 1.6px; margin: 0 0 4px 2px; color: var(--muted); }
+  .bubble{ font-size: 15px; line-height: 1.55; padding: 10px 13px; border-radius: 14px; }
+
+  .turn.jiema{ align-self: flex-start; }
+  .turn.jiema .who{ color: #3e6699; }
+  .turn.jiema .bubble{ background: #fff; color: var(--ink); border-radius: 14px 14px 14px 4px; }
+
+  .turn.you{ align-self: flex-end; text-align: right; }
+  .turn.you .who{ color: var(--crown); margin-right: 2px; }
+  .turn.you .bubble{ background: var(--bubble-user); color: var(--ivory); border-radius: 14px 14px 4px 14px; display:inline-block; text-align:left; }
+
+  /* 思考中的三点 */
+  .dots{ display:inline-flex; gap:5px; padding: 12px 14px; }
+  .dots span{ width:7px; height:7px; border-radius:50%; background:#9fb1c9; animation: blink 1.3s infinite; }
+  .dots span:nth-child(2){ animation-delay:.2s } .dots span:nth-child(3){ animation-delay:.4s }
+  @keyframes blink{ 0%,60%,100%{opacity:.3; transform:translateY(0)} 30%{opacity:1; transform:translateY(-3px)} }
+
+  /* ——— 快捷问题 chips ——— */
+  .chips{ display:flex; gap:8px; overflow-x:auto; padding: 4px 18px 10px; scrollbar-width:none; }
+  .chips::-webkit-scrollbar{ display:none; }
+  .chip{ flex:0 0 auto; font-family:var(--sans); font-size:13px; color:#40505f;
+         background:#fff; border:.5px solid #e3e0d6; border-radius:16px;
+         padding:7px 13px; cursor:pointer; transition: background .15s; white-space:nowrap; }
+  .chip:hover{ background:#efece2; }
+  .chips.hidden{ display:none; }
+
+  /* ——— 输入栏 ——— */
+  .composer{
+    display:flex; align-items:center; gap:9px;
+    padding: 8px 14px calc(14px + env(safe-area-inset-bottom));
+    background: var(--paper);
+  }
+  .field{
+    flex:1; display:flex; align-items:center;
+    background:#fff; border:.5px solid #e3e0d6; border-radius: 22px;
+    padding: 4px 6px 4px 16px;
+  }
+  .field input{
+    flex:1; border:0; outline:0; background:transparent;
+    font-family:var(--sans); font-size:15px; color:var(--ink); padding: 9px 0;
+  }
+  .field input::placeholder{ color:#a7a49a; }
+
+  .btn{ border:0; cursor:pointer; display:flex; align-items:center; justify-content:center;
+        border-radius:50%; transition: transform .1s ease, background .2s ease; }
+  .btn:active{ transform: scale(.94); }
+  .btn:focus-visible{ outline: 2px solid var(--crown); outline-offset: 2px; }
+
+  .send{ width:36px; height:36px; background:var(--sky-top); color:#fff; }
+  .send svg{ width:18px; height:18px; }
+
+  .mic{ width:44px; height:44px; background:var(--crown); color:#fff; flex:0 0 auto; }
+  .mic svg{ width:20px; height:20px; }
+  .shell.listening .mic{ background:#8e2a20; box-shadow: 0 0 0 6px rgba(192,57,43,.18); }
+</style>
+</head>
+<body>
+  <main class="shell" id="shell">
+    <!-- ===================== 夜空 + 鹤 ===================== -->
+    <section class="sky">
+      <div class="brand">
+        <h1>Jiema</h1>
+      </div>
+
+      <span class="star" style="top:26px; left:44px; width:3px; height:3px;"></span>
+      <span class="star" style="top:52px; left:78%; width:2px; height:2px; animation-delay:1s;"></span>
+      <span class="star" style="top:88px; left:20%; width:2px; height:2px; animation-delay:.5s;"></span>
+
+      <svg class="cloud" viewBox="0 0 150 30" aria-hidden="true">
+        <path d="M4 22 Q26 8 52 18 Q78 4 108 18 Q130 14 146 22" fill="none"
+              stroke="#8fa9c9" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+
+      <!-- 鹤 -->
+      <svg class="crane" viewBox="0 0 240 200" role="img" aria-label="Njaay, a standing red-crowned crane">
+        <g class="crane-body">
+          <!-- 腿 -->
+          <path d="M110 150 L104 188" stroke="var(--leg)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M126 150 L132 188" stroke="var(--leg)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M104 188 l-7 5 M104 188 l6 5 M132 188 l-6 5 M132 188 l7 5"
+                stroke="var(--leg)" stroke-width="2.4" stroke-linecap="round"/>
+
+          <!-- 身体 -->
+          <ellipse cx="118" cy="128" rx="46" ry="33" fill="var(--ivory)"/>
+          <!-- 黑色尾羽（丹顶鹤特征） -->
+          <path d="M150 118 C176 112 196 118 210 128 C192 132 172 134 152 132 Z" fill="var(--ink)"/>
+
+          <!-- 翅膀（会动） -->
+          <path class="wing" d="M96 120 C74 108 58 104 46 108 C62 116 82 126 104 128 Z" fill="#efeae0"/>
+
+          <!-- 脖子 + 头 -->
+          <path d="M126 108 C140 82 146 60 143 44" fill="none" stroke="var(--ivory)" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="143" cy="42" r="9" fill="var(--ivory)"/>
+          <!-- 朱顶 -->
+          <circle class="crown" cx="143" cy="35" r="5" fill="var(--crown)"/>
+          <!-- 喙 -->
+          <path d="M151 43 L167 41" stroke="var(--ink)" stroke-width="2.6" stroke-linecap="round"/>
+          <!-- 眼 -->
+          <circle cx="146" cy="43" r="1.4" fill="var(--ink)"/>
+        </g>
+      </svg>
+    </section>
+
+    <!-- ===================== 对话 ===================== -->
+    <section class="sheet">
+      <div class="log" id="log" aria-live="polite"></div>
+
+      <div class="chips" id="chips">
+        <button class="chip" data-q="Doomu jang ji dafa tàng, lu ma war a def?">Doom bu tàng</button>
+        <button class="chip" data-q="Ana bus bi dem Sandaga?">Bus bu Sandaga</button>
+        <button class="chip" data-q="Naka lañuy togg mbaxalu gerte?">Mbaxalu gerte</button>
+        <button class="chip" data-q="Bindal ma SMS ci farañse.">SMS farañse</button>
+      </div>
+
+      <div class="composer">
+        <div class="field">
+          <input id="text" type="text" placeholder="Waxal ak Njaay…" autocomplete="off"
+                 aria-label="Bindal say laaj">
+          <button class="btn send" id="send" aria-label="Yónnee">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6"
+              stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+        <button class="btn mic" id="mic" aria-label="Tëgg ngir wax">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M12 15a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z"
+            stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M6 11a6 6 0 0 0 12 0M12 18v3"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </section>
+  </main>
+
+<script>
+/* =======================================================================
+   Jiema — 前端逻辑
+   ▸ 目前是 DEMO：假回复 + 真实录音（能听到麦克风、看到鹤反应）
+   ▸ 想接真后端，只改下面两个标了 TODO 的函数即可，UI 全不用动。
+   ======================================================================= */
+
+const shell = document.getElementById('shell');
+const log   = document.getElementById('log');
+const chips = document.getElementById('chips');
+const input = document.getElementById('text');
+const send  = document.getElementById('send');
+const mic   = document.getElementById('mic');
+
+/* ---------- 鹤的状态：'idle' | 'listening' | 'thinking' ---------- */
+function setState(s){
+  shell.classList.remove('listening','thinking');
+  if (s !== 'idle') shell.classList.add(s);
+}
+
+/* ---------- 往对话里加一条消息 ---------- */
+function addTurn(who, text){          // who: 'jiema' | 'you'
+  const turn = document.createElement('div');
+  turn.className = 'turn ' + who;
+  turn.innerHTML =
+    `<p class="who">${who === 'you' ? 'YOW' : 'JIEMA'}</p>
+     <div class="bubble"></div>`;
+  turn.querySelector('.bubble').textContent = text;
+  log.appendChild(turn);
+  log.scrollTop = log.scrollHeight;
+}
+
+/* ---------- 思考中的三点 ---------- */
+function showThinking(){
+  const t = document.createElement('div');
+  t.className = 'turn jiema'; t.id = 'thinking';
+  t.innerHTML = `<div class="dots" aria-label="Jiema mungi xalaat"><span></span><span></span><span></span></div>`;
+  log.appendChild(t);
+  log.scrollTop = log.scrollHeight;
+}
+function clearThinking(){ document.getElementById('thinking')?.remove(); }
+
+/* ---------- 首次说话后收起快捷问题 ---------- */
+function hideChips(){ chips.classList.add('hidden'); }
+
+function syncTypingState(){
+  shell.classList.toggle('typing', document.activeElement === input || input.value.trim().length > 0);
+}
+
+/* =======================================================================
+   一次完整的问答流程
+   ======================================================================= */
+async function ask(text){
+  if (!text.trim()) return;
+  hideChips();
+  addTurn('you', text);
+
+  setState('thinking');
+  showThinking();
+  try {
+    const reply = await getReply(text);     // ← 见下方 TODO
+    clearThinking();
+    addTurn('jiema', reply);
+  } catch (e) {
+    clearThinking();
+    addTurn('jiema', 'Jàppandi na. Jéemaatal.');   // “出错了，请重试。”
+    console.error(e);
+  } finally {
+    setState('idle');
+  }
+}
+
+/* =======================================================================
+   TODO ①：把 Whisper 转写接这里
+   现在 demo 直接返回占位文字。接后端时，把录到的 blob POST 给你的服务，
+   返回转写出来的 Wolof 文本即可。
+   ----------------------------------------------------------------------- */
+async function transcribe(audioBlob){
+  // —— 真实实现示例（取消注释并改成你的接口）——
+  // const fd = new FormData();
+  // fd.append('audio', audioBlob, 'speech.webm');
+  // const r = await fetch('/api/transcribe', { method:'POST', body: fd });
+  // const { text } = await r.json();
+  // return text;
+
+  await wait(700);
+  return 'Ana bus bi dem Sandaga?';           // demo 占位
+}
+
+/* =======================================================================
+   TODO ②：把 LLM 回复接这里
+   现在 demo 用几条写死的答案。接后端时，把 userText POST 给你的服务，
+   返回 Jiema 的 Wolof 回复文本即可。
+   ----------------------------------------------------------------------- */
+async function getReply(userText){
+  // —— 真实实现示例 ——
+  // const r = await fetch('/api/ask', {
+  //   method:'POST', headers:{'Content-Type':'application/json'},
+  //   body: JSON.stringify({ question: userText })
+  // });
+  // const { answer } = await r.json();
+  // return answer;
+
+  await wait(1100);
+  const demo = [
+    'Bus bi mungi ñëw ci lu tollu ci 10 simili. Dem na ci yoonu Colobane.',
+    'Su doom ji tàngoore, may ko ndox bu bare te toppatoo ko. Su dee ëpp, dem fajkat.',
+    'Ngir togg mbaxalu gerte: togg gerte gi, boole ko ak jën, sauce si ci kaw ceeb.',
+    'Maa ngi la dégg. Waxaatal bu la neexee.'
+  ];
+  return demo[Math.floor(Math.random() * demo.length)];
+}
+
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+/* =======================================================================
+   录音（真实 MediaRecorder）
+   ======================================================================= */
+let recorder, chunks = [], recording = false;
+
+async function toggleMic(){
+  if (recording){ recorder?.stop(); return; }
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recorder = new MediaRecorder(stream);
+    chunks = [];
+    recorder.ondataavailable = e => chunks.push(e.data);
+    recorder.onstop = async () => {
+      stream.getTracks().forEach(t => t.stop());
+      recording = false;
+      setState('thinking');
+      const blob = new Blob(chunks, { type: 'audio/webm' });
+      const text = await transcribe(blob);      // 语音 → 文本
+      ask(text);                                // 再走正常问答
+    };
+    recorder.start();
+    recording = true;
+    setState('listening');                      // 鹤开始“听”
+  } catch (e) {
+    addTurn('jiema', 'Duma gis micro bi. Xoolal say tolluwaay.');  // 拿不到麦克风
+    console.error(e);
+  }
+}
+
+/* ---------- 事件绑定 ---------- */
+send.addEventListener('click', () => { const v = input.value; input.value=''; ask(v); });
+input.addEventListener('keydown', e => { if (e.key === 'Enter'){ const v = input.value; input.value=''; ask(v); } });
+input.addEventListener('focus', syncTypingState);
+input.addEventListener('input', syncTypingState);
+input.addEventListener('blur', syncTypingState);
+mic.addEventListener('click', toggleMic);
+chips.addEventListener('click', e => {
+  const b = e.target.closest('.chip');
+  if (b) ask(b.dataset.q);
+});
+
+/* ---------- 开场白 ---------- */
+addTurn('jiema', 'Nanga def? Laaj ma li nga bëgg — ci baat mbaa ci mbind.');
+</script>
+</body>
+</html>
