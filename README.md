@@ -1,6 +1,6 @@
-# Jiema
+# Jiema — Wolof Assistant
 
-A small browser demo for a Wolof-first assistant for Senegalese users who may prefer Wolof over French. Jiema is being built toward a local, low-memory voice stack.
+Jiema is a Wolof-first assistant for Senegalese users who may prefer Wolof over French. It is being built toward a local, low-memory voice stack for affordable Android devices.
 
 ```text
 Wolof voice or transcript -> Wolof ASR -> small local LLM -> simple Wolof answer -> optional Wolof TTS
