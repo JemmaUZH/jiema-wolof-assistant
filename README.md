@@ -1,16 +1,16 @@
 # Jiema — Wolof Assistant
 
-Jiema is a Wolof-first assistant for Senegalese users who may prefer Wolof over French. It is being built toward a local, low-memory voice stack for affordable Android devices.
+Jiema is a Wolof-first voice assistant for Senegalese users who may prefer Wolof over French. The long-term goal is an offline Android APK that runs on affordable phones with a local, low-memory speech and language stack.
 
 ## Motivation
 
-Jiema is motivated by a simple digital-access gap: many people who could benefit from large language models do not primarily use English or French, and some may not be comfortable typing long questions at all. In Senegal, Wolof is widely used in everyday life, but most AI assistants still assume text-first interaction in high-resource languages. Jiema explores a voice-first, Wolof-first interface that can eventually run offline on affordable Android phones, so users can access practical AI help without a cloud subscription or a high-end device.
+Jiema is motivated by a simple digital-access gap: many people who could benefit from large language models do not primarily use English or French, and some may not be comfortable typing long questions at all. In Senegal, Wolof is widely used in everyday life, but most AI assistants still assume text-first interaction in high-resource languages. Jiema explores a voice-first, Wolof-first assistant that can eventually be packaged as an offline Android APK, so users can access practical AI help without a cloud subscription, constant connectivity, or a high-end device.
 
 ```text
 Wolof voice or transcript -> Wolof ASR -> small local LLM -> simple Wolof answer -> optional Wolof TTS
 ```
 
-The app does not require a domain selector. It accepts Wolof, French, and mixed Wolof-French input, then asks the model to infer whether the request is about agriculture, transport, health, administration, education, finance, or general daily help.
+The current browser UI is only a prototype shell for testing the interaction and local model pipeline before the Android APK. Jiema does not require a domain selector: it accepts Wolof, French, and mixed Wolof-French input, then infers whether the request is about agriculture, transport, health, administration, education, finance, or general daily help.
 
 See [PROPOSAL.md](./PROPOSAL.md) for the product/demo proposal.
 
