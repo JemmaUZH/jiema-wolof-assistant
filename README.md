@@ -2,6 +2,10 @@
 
 Jiema is a Wolof-first assistant for Senegalese users who may prefer Wolof over French. It is being built toward a local, low-memory voice stack for affordable Android devices.
 
+## Motivation
+
+Jiema is motivated by a simple digital-access gap: many people who could benefit from large language models do not primarily use English or French, and some may not be comfortable typing long questions at all. In Senegal, Wolof is widely used in everyday life, but most AI assistants still assume text-first interaction in high-resource languages. Jiema explores a voice-first, Wolof-first interface that can eventually run offline on affordable Android phones, so users can access practical AI help without a cloud subscription or a high-end device.
+
 ```text
 Wolof voice or transcript -> Wolof ASR -> small local LLM -> simple Wolof answer -> optional Wolof TTS
 ```
