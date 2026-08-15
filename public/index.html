@@ -203,6 +203,56 @@
   .mic{ width:44px; height:44px; background:var(--crown); color:#fff; flex:0 0 auto; }
   .mic svg{ width:20px; height:20px; }
   .shell.listening .mic{ background:#8e2a20; box-shadow: 0 0 0 6px rgba(192,57,43,.18); }
+
+  .history-toggle{
+    position:absolute; top:18px; right:18px; z-index:4;
+    width:36px; height:36px; border:0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    color:var(--ivory); background:rgba(255,255,255,.12);
+    cursor:pointer; backdrop-filter: blur(8px);
+  }
+  .history-toggle svg{ width:18px; height:18px; }
+  .history-panel{
+    position:absolute; inset:0; z-index:8;
+    display:flex; flex-direction:column;
+    background:var(--paper);
+    transform:translateX(102%);
+    transition:transform .28s ease;
+  }
+  .shell.history-open .history-panel{ transform:translateX(0); }
+  .history-head{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 18px 10px;
+  }
+  .history-head h2{
+    margin:0; font-family:var(--display); font-weight:600; font-size:24px; color:var(--ink);
+  }
+  .history-close{
+    width:34px; height:34px; border:0; border-radius:50%;
+    background:#fff; color:var(--ink); cursor:pointer; font-size:20px;
+  }
+  .history-search{
+    margin:0 18px 12px; border:.5px solid #e3e0d6; border-radius:18px;
+    background:#fff; padding:10px 14px; font-family:var(--sans); font-size:15px;
+    outline:0; color:var(--ink);
+  }
+  .history-list{
+    flex:1; overflow-y:auto; padding:0 18px 18px; display:flex; flex-direction:column; gap:10px;
+  }
+  .history-empty{ color:var(--muted); font-size:14px; margin:18px 2px; }
+  .history-item{
+    border:0; border-radius:16px; background:#fff; color:var(--ink);
+    cursor:pointer; font-family:var(--sans); padding:12px 13px; text-align:left;
+  }
+  .history-item strong{ display:block; font-size:14px; line-height:1.35; margin-bottom:6px; }
+  .history-item span{ display:block; color:var(--muted); font-size:12px; }
+  .history-actions{
+    display:flex; justify-content:flex-end; padding:0 18px 18px;
+  }
+  .clear-history{
+    border:0; border-radius:16px; background:#fff; color:var(--crown);
+    cursor:pointer; font-family:var(--sans); font-size:13px; padding:8px 13px;
+  }
 </style>
 </head>
 <body>
@@ -212,6 +262,10 @@
       <div class="brand">
         <h1>Jiema</h1>
       </div>
+      <button class="history-toggle" id="historyToggle" aria-label="Waxtaan yi weesu">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 8v5l3 2M5 5a9 9 0 1 1-1.9 9.8M3 5v5h5"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
 
       <span class="star" style="top:26px; left:44px; width:3px; height:3px;"></span>
       <span class="star" style="top:52px; left:78%; width:2px; height:2px; animation-delay:1s;"></span>
@@ -251,6 +305,18 @@
         </g>
       </svg>
     </section>
+
+    <aside class="history-panel" id="historyPanel" aria-label="Waxtaan yi weesu">
+      <div class="history-head">
+        <h2>Waxtaan</h2>
+        <button class="history-close" id="historyClose" aria-label="Tëj">×</button>
+      </div>
+      <input class="history-search" id="historySearch" type="search" autocomplete="off" aria-label="Seet ci waxtaan">
+      <div class="history-list" id="historyList"></div>
+      <div class="history-actions">
+        <button class="clear-history" id="clearHistory">Far lépp</button>
+      </div>
+    </aside>
 
     <!-- ===================== 对话 ===================== -->
     <section class="sheet">
@@ -294,6 +360,75 @@ const chips = document.getElementById('chips');
 const input = document.getElementById('text');
 const send  = document.getElementById('send');
 const mic   = document.getElementById('mic');
+const historyToggle = document.getElementById('historyToggle');
+const historyClose = document.getElementById('historyClose');
+const historySearch = document.getElementById('historySearch');
+const historyList = document.getElementById('historyList');
+const clearHistory = document.getElementById('clearHistory');
+const HISTORY_KEY = 'jiema.chatHistory.v1';
+
+function newChatId(){
+  return globalThis.crypto?.randomUUID ? globalThis.crypto.randomUUID() : String(Date.now() + Math.random());
+}
+
+let activeChat = { id: newChatId(), createdAt: Date.now(), updatedAt: Date.now(), turns: [] };
+
+function loadHistory(){
+  try { return JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); }
+  catch { return []; }
+}
+
+function saveHistoryList(history){
+  localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 50)));
+}
+
+function summarizeChat(chat){
+  const firstUser = chat.turns.find(t => t.who === 'you')?.text;
+  const firstJiema = chat.turns.find(t => t.who === 'jiema')?.text;
+  return (firstUser || firstJiema || 'Waxtaan bu bees').slice(0, 80);
+}
+
+function persistActiveChat(){
+  if (!activeChat.turns.length) return;
+  activeChat.updatedAt = Date.now();
+  const history = loadHistory().filter(chat => chat.id !== activeChat.id);
+  saveHistoryList([activeChat, ...history]);
+  renderHistory();
+}
+
+function renderHistory(){
+  const q = historySearch.value.trim().toLowerCase();
+  const history = loadHistory().filter(chat => {
+    if (!q) return true;
+    return chat.turns.some(turn => turn.text.toLowerCase().includes(q));
+  });
+  historyList.innerHTML = '';
+  if (!history.length){
+    const empty = document.createElement('p');
+    empty.className = 'history-empty';
+    empty.textContent = 'Amul dara.';
+    historyList.appendChild(empty);
+    return;
+  }
+  history.forEach(chat => {
+    const item = document.createElement('button');
+    item.className = 'history-item';
+    item.type = 'button';
+    item.innerHTML = `<strong></strong><span></span>`;
+    item.querySelector('strong').textContent = summarizeChat(chat);
+    item.querySelector('span').textContent = new Date(chat.updatedAt).toLocaleString();
+    item.addEventListener('click', () => restoreChat(chat));
+    historyList.appendChild(item);
+  });
+}
+
+function restoreChat(chat){
+  activeChat = chat;
+  log.innerHTML = '';
+  chat.turns.forEach(turn => addTurn(turn.who, turn.text, { save:false }));
+  hideChips();
+  shell.classList.remove('history-open');
+}
 
 /* ---------- 鹤的状态：'idle' | 'listening' | 'thinking' ---------- */
 function setState(s){
@@ -302,7 +437,7 @@ function setState(s){
 }
 
 /* ---------- 往对话里加一条消息 ---------- */
-function addTurn(who, text){          // who: 'jiema' | 'you'
+function addTurn(who, text, options = { save:true }){          // who: 'jiema' | 'you'
   const turn = document.createElement('div');
   turn.className = 'turn ' + who;
   turn.innerHTML =
@@ -311,6 +446,10 @@ function addTurn(who, text){          // who: 'jiema' | 'you'
   turn.querySelector('.bubble').textContent = text;
   log.appendChild(turn);
   log.scrollTop = log.scrollHeight;
+  if (options.save){
+    activeChat.turns.push({ who, text, at: Date.now() });
+    persistActiveChat();
+  }
 }
 
 /* ---------- 思考中的三点 ---------- */
@@ -359,15 +498,12 @@ async function ask(text){
    返回转写出来的 Wolof 文本即可。
    ----------------------------------------------------------------------- */
 async function transcribe(audioBlob){
-  // —— 真实实现示例（取消注释并改成你的接口）——
-  // const fd = new FormData();
-  // fd.append('audio', audioBlob, 'speech.webm');
-  // const r = await fetch('/api/transcribe', { method:'POST', body: fd });
-  // const { text } = await r.json();
-  // return text;
-
-  await wait(700);
-  return 'Ana bus bi dem Sandaga?';           // demo 占位
+  const fd = new FormData();
+  fd.append('audio', audioBlob, 'speech.webm');
+  const r = await fetch('/api/transcribe', { method:'POST', body: fd });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Transcription failed.');
+  return data.transcript;
 }
 
 /* =======================================================================
@@ -376,25 +512,15 @@ async function transcribe(audioBlob){
    返回 Jiema 的 Wolof 回复文本即可。
    ----------------------------------------------------------------------- */
 async function getReply(userText){
-  // —— 真实实现示例 ——
-  // const r = await fetch('/api/ask', {
-  //   method:'POST', headers:{'Content-Type':'application/json'},
-  //   body: JSON.stringify({ question: userText })
-  // });
-  // const { answer } = await r.json();
-  // return answer;
-
-  await wait(1100);
-  const demo = [
-    'Bus bi mungi ñëw ci lu tollu ci 10 simili. Dem na ci yoonu Colobane.',
-    'Su doom ji tàngoore, may ko ndox bu bare te toppatoo ko. Su dee ëpp, dem fajkat.',
-    'Ngir togg mbaxalu gerte: togg gerte gi, boole ko ak jën, sauce si ci kaw ceeb.',
-    'Maa ngi la dégg. Waxaatal bu la neexee.'
-  ];
-  return demo[Math.floor(Math.random() * demo.length)];
+  const r = await fetch('/api/answer', {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({ transcript: userText })
+  });
+  const data = await r.json();
+  if (!r.ok) throw new Error(data.error || 'Answer failed.');
+  return data.wolof || 'Jàppandi na. Jéemaatal.';
 }
-
-const wait = ms => new Promise(r => setTimeout(r, ms));
 
 /* =======================================================================
    录音（真实 MediaRecorder）
@@ -432,13 +558,21 @@ input.addEventListener('focus', syncTypingState);
 input.addEventListener('input', syncTypingState);
 input.addEventListener('blur', syncTypingState);
 mic.addEventListener('click', toggleMic);
+historyToggle.addEventListener('click', () => { renderHistory(); shell.classList.add('history-open'); historySearch.focus(); });
+historyClose.addEventListener('click', () => shell.classList.remove('history-open'));
+historySearch.addEventListener('input', renderHistory);
+clearHistory.addEventListener('click', () => {
+  localStorage.removeItem(HISTORY_KEY);
+  activeChat = { id: newChatId(), createdAt: Date.now(), updatedAt: Date.now(), turns: [] };
+  renderHistory();
+});
 chips.addEventListener('click', e => {
   const b = e.target.closest('.chip');
   if (b) ask(b.dataset.q);
 });
 
 /* ---------- 开场白 ---------- */
-addTurn('jiema', 'Nanga def? Laaj ma li nga bëgg — ci baat mbaa ci mbind.');
+addTurn('jiema', 'Nanga def? Laaj ma li nga bëgg — ci baat mbaa ci mbind.', { save:false });
 </script>
 </body>
 </html>
