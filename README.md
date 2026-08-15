@@ -1,4 +1,4 @@
-# Jiema
+# Wolof Audio Assistant
 
 A small browser demo for a Wolof-first assistant for Senegalese users who may prefer Wolof over French. Jiema is being built toward a local, low-memory voice stack.
 
