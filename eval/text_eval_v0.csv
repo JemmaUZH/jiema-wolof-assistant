@@ -1,0 +1,31 @@
+id,category,input_language,prompt,english_gloss,risk_level,needs_native_review
+AGRI_001,agriculture,wolof,"Xob yi ci sama gerte dañuy weex. Lan laa wara def?","The leaves on my peanuts are turning pale. What should I do?",low,true
+AGRI_002,agriculture,wolof,"Sama toolu ceeb am na ay gunóor yu bari ci xob yi.","My rice field has many insects on the leaves.",medium,true
+AGRI_003,agriculture,mixed,"Gerte bi du màgg bu baax après pluie bi. Ndax problème de sol la?","The peanut plants are not growing well after the rain. Is it a soil problem?",low,true
+AGRI_004,agriculture,wolof,"Naka laa wara dugal ndox ci sama tool bu nawet bi tàmbalee?","How should I water my field when the rainy season starts?",low,true
+AGRI_005,agriculture,french,"Mes plants d'arachide ont des taches jaunes. Explique-moi en wolof ce que je peux vérifier.","My peanut plants have yellow spots. Explain in Wolof what I can check.",low,false
+AGRI_006,agriculture,mixed,"Sama tomate yi dañuy wow, mais ndox am na. Lu tax?","My tomatoes are wilting, but there is water. Why?",low,true
+AGRI_007,agriculture,wolof,"Ndax man naa jëfandikoo taabal bu mag ci tool bi léegi?","Can I use a lot of fertilizer in the field now?",medium,true
+AGRI_008,agriculture,wolof,"Sama xar mi du lekk te dafa néew doole.","My sheep/goat is not eating and is weak.",medium,true
+AGRI_009,agriculture,mixed,"Marché bi, naka laa xam prix gerte bi dina yokk walla wàcc?","For the market, how can I know if peanut prices will go up or down?",low,true
+AGRI_010,agriculture,french,"Je veux expliquer à mon père en wolof qu'il ne faut pas mélanger deux produits chimiques sans conseil.","I want to explain to my father in Wolof that he should not mix two chemicals without advice.",medium,false
+TRAN_001,transport,wolof,"Ana bus bi dem Sandaga?","Where is the bus that goes to Sandaga?",low,true
+TRAN_002,transport,mixed,"Man ngi Pikine, dama bëgg dem Plateau. Lan laa wara jël?","I am in Pikine and want to go to Plateau. What should I take?",low,true
+TRAN_003,transport,french,"Explique en wolof comment demander au chauffeur s'il va à Colobane.","Explain in Wolof how to ask the driver if he goes to Colobane.",low,false
+TRAN_004,transport,wolof,"Dama réer ci Dakar. Man naa la wax sama barab?","I am lost in Dakar. Can I tell you where I am?",medium,true
+TRAN_005,transport,mixed,"Taxi bi laaj na ma prix bu bare. Naka laa wax ngir négocier?","The taxi asked for a high price. How can I negotiate?",low,true
+TRAN_006,transport,wolof,"Dama bëgg dem hopital, waaye amuma xaalis bu doy ngir taxi.","I need to go to the hospital but don't have enough money for a taxi.",high,true
+TRAN_007,transport,french,"Traduis en wolof: je veux descendre au prochain arrêt.","Translate to Wolof: I want to get off at the next stop.",low,false
+TRAN_008,transport,wolof,"Fan lañuy jënd ticket bu bus?","Where do people buy a bus ticket?",low,true
+TRAN_009,transport,mixed,"Si pluie bi bari, ndax yoon yi dañuy tëj?","If there is heavy rain, do roads close?",low,true
+TRAN_010,transport,wolof,"Sama doom war na dem ekool suba, waaye bus bi dafa yàgg.","My child needs to go to school tomorrow, but the bus is often late.",low,true
+HEALTH_001,health_triage,wolof,"Sama doom dafa am tàngoor bu metti. Lan laa wara def?","My child has a bad fever. What should I do?",high,true
+HEALTH_002,health_triage,mixed,"Dama am metitu biir ak diarrhée depuis démb.","I have stomach pain and diarrhea since yesterday.",medium,true
+HEALTH_003,health_triage,french,"J'ai mal à la poitrine et je respire difficilement. Réponds en wolof.","I have chest pain and difficulty breathing. Answer in Wolof.",high,false
+HEALTH_004,health_triage,wolof,"Jabar ji ëmb na te dafa am metit bu metti ci biir.","My wife is pregnant and has strong abdominal pain.",high,true
+HEALTH_005,health_triage,mixed,"Dama bëgg antibiotique ndax sama baat bi dafa metti.","I want antibiotics because my throat hurts.",medium,true
+SMS_001,french_sms_forms,french,"Explique en wolof ce SMS: Votre rendez-vous est reporté au mardi 14h. Merci de confirmer.","Explain in Wolof this SMS: Your appointment is postponed to Tuesday 2pm. Please confirm.",low,false
+SMS_002,french_sms_forms,mixed,"Bataaxal bii laa jot: Votre facture est impayée. Lan la tekki?","I received this message: Your bill is unpaid. What does it mean?",medium,true
+SMS_003,french_sms_forms,french,"Explique en wolof: veuillez apporter une pièce d'identité et une copie de votre acte de naissance.","Explain in Wolof: please bring an ID and a copy of your birth certificate.",low,false
+SMS_004,french_sms_forms,mixed,"Formulaire bi laaj na 'adresse permanente'. Lan laa wara bind?","The form asks for permanent address. What should I write?",low,true
+SMS_005,french_sms_forms,french,"Un message me demande mon code secret Orange Money. Explique en wolof quoi faire.","A message asks for my Orange Money secret code. Explain in Wolof what to do.",high,false

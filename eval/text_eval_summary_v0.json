@@ -1,0 +1,338 @@
+{
+  "summary": {
+    "total_planned": 30,
+    "completed": 30,
+    "passed": 28,
+    "model_responses": 28,
+    "failures": 2,
+    "note": "Run complete. Human/native-speaker scoring is still required.",
+    "fallback_count": 22,
+    "suspicious_count": 4,
+    "timeout_or_abort_count": 2,
+    "avg_latency_ms": 8635,
+    "by_category": {
+      "agriculture": {
+        "total": 10,
+        "ok": 8,
+        "failed": 2
+      },
+      "transport": {
+        "total": 10,
+        "ok": 10,
+        "failed": 0
+      },
+      "health_triage": {
+        "total": 5,
+        "ok": 5,
+        "failed": 0
+      },
+      "french_sms_forms": {
+        "total": 5,
+        "ok": 5,
+        "failed": 0
+      }
+    }
+  },
+  "review_rows": [
+    {
+      "id": "AGRI_001",
+      "ok": true,
+      "latency_ms": 8136,
+      "category": "agriculture",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na jóge ci ndox, suuf, walla ay dundkat. Xoolal suuf si, xob yi ci suuf ak ci kaw, te wax ak ku xam mbay mi bu dee jafe-jafe bi yokku."
+    },
+    {
+      "id": "AGRI_002",
+      "ok": true,
+      "latency_ms": 10980,
+      "category": "agriculture|transport|health|admin|education|finance|general",
+      "fallback": false,
+      "suspicious": true,
+      "error": null,
+      "wolof": "gunóor yu bari ci xob yi"
+    },
+    {
+      "id": "AGRI_003",
+      "ok": true,
+      "latency_ms": 9083,
+      "category": "agriculture",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na jóge ci ndox, suuf, walla ay dundkat. Xoolal suuf si, xob yi ci suuf ak ci kaw, te wax ak ku xam mbay mi bu dee jafe-jafe bi yokku."
+    },
+    {
+      "id": "AGRI_004",
+      "ok": true,
+      "latency_ms": 6584,
+      "category": "agriculture",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na jóge ci ndox, suuf, walla ay dundkat. Xoolal suuf si, xob yi ci suuf ak ci kaw, te wax ak ku xam mbay mi bu dee jafe-jafe bi yokku."
+    },
+    {
+      "id": "AGRI_005",
+      "ok": false,
+      "latency_ms": 20008,
+      "category": "",
+      "fallback": false,
+      "suspicious": false,
+      "error": "This operation was aborted",
+      "wolof": ""
+    },
+    {
+      "id": "AGRI_006",
+      "ok": true,
+      "latency_ms": 6443,
+      "category": "general",
+      "fallback": false,
+      "suspicious": false,
+      "error": null,
+      "wolof": "ndox am na, ndax sama tomate yi dañuy wow?"
+    },
+    {
+      "id": "AGRI_007",
+      "ok": true,
+      "latency_ms": 17752,
+      "category": "agriculture",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na jóge ci ndox, suuf, walla ay dundkat. Xoolal suuf si, xob yi ci suuf ak ci kaw, te wax ak ku xam mbay mi bu dee jafe-jafe bi yokku."
+    },
+    {
+      "id": "AGRI_008",
+      "ok": true,
+      "latency_ms": 6552,
+      "category": "general",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Maa ngi la dégg. Waxal ma lenn ci lu gàtt ngir ma dimbali la bu baax."
+    },
+    {
+      "id": "AGRI_009",
+      "ok": true,
+      "latency_ms": 5057,
+      "category": "agriculture",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na jóge ci ndox, suuf, walla ay dundkat. Xoolal suuf si, xob yi ci suuf ak ci kaw, te wax ak ku xam mbay mi bu dee jafe-jafe bi yokku."
+    },
+    {
+      "id": "AGRI_010",
+      "ok": false,
+      "latency_ms": 20003,
+      "category": "",
+      "fallback": false,
+      "suspicious": false,
+      "error": "This operation was aborted",
+      "wolof": ""
+    },
+    {
+      "id": "TRAN_001",
+      "ok": true,
+      "latency_ms": 4742,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_002",
+      "ok": true,
+      "latency_ms": 5057,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_003",
+      "ok": true,
+      "latency_ms": 16739,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_004",
+      "ok": true,
+      "latency_ms": 4857,
+      "category": "general",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Maa ngi la dégg. Waxal ma lenn ci lu gàtt ngir ma dimbali la bu baax."
+    },
+    {
+      "id": "TRAN_005",
+      "ok": true,
+      "latency_ms": 5480,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_006",
+      "ok": true,
+      "latency_ms": 5807,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_007",
+      "ok": true,
+      "latency_ms": 7168,
+      "category": "transport|general",
+      "fallback": false,
+      "suspicious": true,
+      "error": null,
+      "wolof": "je veux descendre au prochain arrêt"
+    },
+    {
+      "id": "TRAN_008",
+      "ok": true,
+      "latency_ms": 4124,
+      "category": "transport",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Waxal ma fan nga nekk léegi ak fan nga bëgg dem. Su ma amee barab bi, dinaa la dimbali nga xam lan nga wara laaj walla jël."
+    },
+    {
+      "id": "TRAN_009",
+      "ok": true,
+      "latency_ms": 4302,
+      "category": "general",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Maa ngi la dégg. Waxal ma lenn ci lu gàtt ngir ma dimbali la bu baax."
+    },
+    {
+      "id": "TRAN_010",
+      "ok": true,
+      "latency_ms": 7262,
+      "category": "transport|general",
+      "fallback": false,
+      "suspicious": true,
+      "error": null,
+      "wolof": "suba, waaye bus bi dafa yàgg"
+    },
+    {
+      "id": "HEALTH_001",
+      "ok": true,
+      "latency_ms": 4969,
+      "category": "health",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na am solo. Waxal ma at mi, naka la yaram wi mel, ak ba ñaata fan la tàmbali. Su dee noyyi metti, xel mi fatt, deret, walla doom bu ndaw la, demal ci fajkat léegi."
+    },
+    {
+      "id": "HEALTH_002",
+      "ok": true,
+      "latency_ms": 4566,
+      "category": "health",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na am solo. Waxal ma at mi, naka la yaram wi mel, ak ba ñaata fan la tàmbali. Su dee noyyi metti, xel mi fatt, deret, walla doom bu ndaw la, demal ci fajkat léegi."
+    },
+    {
+      "id": "HEALTH_003",
+      "ok": true,
+      "latency_ms": 15224,
+      "category": "health",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na am solo. Waxal ma at mi, naka la yaram wi mel, ak ba ñaata fan la tàmbali. Su dee noyyi metti, xel mi fatt, deret, walla doom bu ndaw la, demal ci fajkat léegi."
+    },
+    {
+      "id": "HEALTH_004",
+      "ok": true,
+      "latency_ms": 4842,
+      "category": "health",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Mën na am solo. Waxal ma at mi, naka la yaram wi mel, ak ba ñaata fan la tàmbali. Su dee noyyi metti, xel mi fatt, deret, walla doom bu ndaw la, demal ci fajkat léegi."
+    },
+    {
+      "id": "HEALTH_005",
+      "ok": true,
+      "latency_ms": 5629,
+      "category": "general",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Maa ngi la dégg. Waxal ma lenn ci lu gàtt ngir ma dimbali la bu baax."
+    },
+    {
+      "id": "SMS_001",
+      "ok": true,
+      "latency_ms": 11235,
+      "category": "admin",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Bataaxal bi dafay laaj nga seet li ñu bind. Bul joxe sa code secret mukk. Bu dee xaalis walla lien la laaj, seetal bu baax ndax dëgg la."
+    },
+    {
+      "id": "SMS_002",
+      "ok": true,
+      "latency_ms": 8310,
+      "category": "admin",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Bataaxal bi dafay laaj nga seet li ñu bind. Bul joxe sa code secret mukk. Bu dee xaalis walla lien la laaj, seetal bu baax ndax dëgg la."
+    },
+    {
+      "id": "SMS_003",
+      "ok": true,
+      "latency_ms": 9760,
+      "category": "agriculture|transport|health|admin|education|finance|general",
+      "fallback": false,
+      "suspicious": true,
+      "error": null,
+      "wolof": "Vous devez apporter une pièce d’identité et une copie de votre acte de naissance."
+    },
+    {
+      "id": "SMS_004",
+      "ok": true,
+      "latency_ms": 6798,
+      "category": "admin",
+      "fallback": true,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Bataaxal bi dafay laaj nga seet li ñu bind. Bul joxe sa code secret mukk. Bu dee xaalis walla lien la laaj, seetal bu baax ndax dëgg la."
+    },
+    {
+      "id": "SMS_005",
+      "ok": true,
+      "latency_ms": 11583,
+      "category": "general",
+      "fallback": false,
+      "suspicious": false,
+      "error": null,
+      "wolof": "Jàngal, jàmm rekk! Ma ngi bëgg a xam ni ma def. Ma ngi am code Orange Money, waaye ma xamul ko ci sama téléphone. Ma ngi bëgg a xam ni ma def, baax na ma jàngal."
+    }
+  ]
+}

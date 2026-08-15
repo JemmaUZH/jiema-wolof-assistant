@@ -2,7 +2,7 @@
 
 ## One-Line Summary
 
-Jiema is a Wolof-first voice assistant that helps Senegalese users access large language model capabilities without needing to speak or read French.
+Jiema is a Wolof-first voice assistant that helps Senegalese users access large language model capabilities without needing to speak or read French, using Sunflower-Gemma4-E2B as the target local LLM.
 
 ## Problem
 
@@ -52,7 +52,7 @@ Current technical flow:
 ```text
 Audio input
 -> OpenAI whisper-1 transcription
--> LLM reasoning with Wolof/French/English support
+-> local Sunflower-Gemma4-E2B reasoning with Wolof/French/English support
 -> JSON response
 -> Simple Wolof answer displayed in chat
 ```
@@ -60,7 +60,9 @@ Audio input
 The backend currently uses:
 
 - ASR: `whisper-1`
-- LLM: `gpt-4o-mini` by default, configurable with `OPENAI_CHAT_MODEL`
+- LLM: local Sunflower-Gemma4-E2B-compatible chat endpoint
+
+Sunflower-Gemma4-E2B is the implementation target because Jiema is designed for low-cost, on-device Android deployment. The goal is not to maximize benchmark performance; it is to find the smallest model that can produce useful Wolof explanations under realistic phone constraints.
 
 ## Demo Scope
 
@@ -139,15 +141,18 @@ Success for the first demo is not perfect Wolof. Success is showing that a non-F
 - LLM Wolof output may sound unnatural without native review.
 - Health guidance can be harmful if the safety boundary is weak.
 - The project needs local Senegalese validation before claiming user readiness.
+- Sunflower-Gemma4-E2B still needs to pass Wolof/French evaluation before being treated as the final model.
 
 ## Next Steps
 
 1. Connect the current frontend to the real backend functions, replacing any remaining placeholder demo logic.
-2. Test with typed Wolof/French examples using an `OPENAI_API_KEY`.
-3. Record or source 20-30 short Wolof audio samples for first ASR testing.
-4. Ask native Wolof speakers to rate answer clarity and naturalness.
-5. Build a small evaluation spreadsheet from agriculture, transport, health, and French-message examples.
-6. Decide whether to fine-tune ASR after the first transcript-quality review.
+2. Run the Gemma-backed baseline with typed Wolof/French examples.
+3. Confirm the local Gemma endpoint returns valid Jiema JSON consistently.
+4. Record or source 20-30 short Wolof audio samples for first ASR testing.
+5. Ask native Wolof speakers to rate answer clarity and naturalness.
+6. Build a small evaluation spreadsheet from agriculture, transport, health, and French-message examples.
+7. Decide whether to fine-tune ASR after the first transcript-quality review.
+8. Quantize and profile Sunflower-Gemma4-E2B for Android-oriented memory and latency targets.
 
 ## Pitch
 
